@@ -71,7 +71,7 @@ module.exports = function(app, passport){
 			callbackURL: '/auth/google/callback'
 		},
 		function(accessToken, refreshToken, profile, done) {
-			User.findOne({ email: profile._json.emails[0].value}).select('username password email').exec(function(err, user){
+			User.findOne({ email: profile._json.emails[0].value}).select('username password email active').exec(function(err, user){
 				if (err) done(err)
 
 				if (user && user !== null) {

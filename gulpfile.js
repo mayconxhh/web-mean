@@ -53,6 +53,15 @@ gulp.task('watching', function(){
 	return compile(true)
 })
 
+gulp.task('compressjs', function(){
+	pump([
+			gulp.src('src/js/*.js'),
+			uglify(),
+			gulp.dest('public/js/')
+		]
+	)
+})
+
 gulp.task('watch', ()=> {
 	gulp.watch('./lib/styles/*.styl', ['stylus'])
 	gulp.watch('./lib/js/*.js', ['watching'])

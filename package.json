@@ -32,6 +32,7 @@
     "mongoose": "^4.9.2",
     "mongoose-title-case": "0.0.4",
     "mongoose-validator": "^1.2.5",
+    "morgan": "^1.8.1",
     "nodemailer": "^4.0.0",
     "nodemailer-sendgrid-transport": "^0.2.0",
     "passport": "^0.3.2",

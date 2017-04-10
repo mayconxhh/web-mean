@@ -55,7 +55,7 @@ gulp.task('watching', function(){
 
 gulp.task('compressjs', function(){
 	pump([
-			gulp.src('src/js/*.js'),
+			gulp.src('public/js/app.js'),
 			uglify(),
 			gulp.dest('public/js/')
 		]

@@ -1,82 +1,84 @@
-<div class="page-header">
-	<h1>Registro de Usuario</h1>
-</div>
+<div class="container">
+	<div class="page-header">
+		<h1>Registro de Usuario</h1>
+	</div>
 
-<form name="regForm" ng-submit="register(user, regForm.$valid, confirmed)" novalidate>
-	<div ng-class="{ 'has-success': (!regForm.name.$pristine && regForm.name.$valid), 'has-error': (!regForm.name.$pristine && !regForm.name.$valid) || (!regForm.name.$valid && regForm.$submitted)}">
-		<!-- Name -->
-		<label for="name">Nombre: </label>
-		<input class="form-control" id="name" name="name" type="text" ng-model="user.name" ng-pattern="/^(([a-zA-Z]{2,10})\w)?(([\s]*[a-zA-Z]{2,10})\w)$/" ng-minglength="3" ng-maxlength="22" required>
-		<p class="help-block" ng-show="(!regForm.name.$pristine && regForm.name.$error.required) || (regForm.$submitted && regForm.name.$error.required)">Este campo es obligatorio</p>
-		<ul class="help-block" ng-show="(!regForm.name.$pristine && regForm.name.$error.pattern) || (!regForm.name.$pristine && regForm.name.$error.minglength) || (!regForm.name.$pristine && regForm.name.$error.maxlength)">
-			<li>El segundo nombre es opcional.</li>
-			<li>Solo puedes ingresar un espacio entre nombres.</li>
-			<li>Debe ser mas de 3 letras, pero menos de 22. Cada nombre puede contener al menos 10 letras</li>
-			<li>No puede contener caracteres especiales.</li>
-			<li>No puede contener números</li>
-		</ul>
+	<form name="regForm" ng-submit="register(user, regForm.$valid, confirmed)" novalidate>
+		<div ng-class="{ 'has-success': (!regForm.name.$pristine && regForm.name.$valid), 'has-error': (!regForm.name.$pristine && !regForm.name.$valid) || (!regForm.name.$valid && regForm.$submitted)}">
+			<!-- Name -->
+			<label for="name">Nombre: </label>
+			<input class="form-control" id="name" name="name" type="text" ng-model="user.name" ng-pattern="/^(([a-zA-Z]{2,10})\w)?(([\s]*[a-zA-Z]{2,10})\w)$/" ng-minglength="3" ng-maxlength="22" required>
+			<p class="help-block" ng-show="(!regForm.name.$pristine && regForm.name.$error.required) || (regForm.$submitted && regForm.name.$error.required)">Este campo es obligatorio</p>
+			<ul class="help-block" ng-show="(!regForm.name.$pristine && regForm.name.$error.pattern) || (!regForm.name.$pristine && regForm.name.$error.minglength) || (!regForm.name.$pristine && regForm.name.$error.maxlength)">
+				<li>El segundo nombre es opcional.</li>
+				<li>Solo puedes ingresar un espacio entre nombres.</li>
+				<li>Debe ser mas de 3 letras, pero menos de 22. Cada nombre puede contener al menos 10 letras</li>
+				<li>No puede contener caracteres especiales.</li>
+				<li>No puede contener números</li>
+			</ul>
+		</div>
+		<br>
+		<div ng-class="{ 'has-success': (!regForm.email.$pristine && regForm.email.$valid && !emailInvalid), 'has-error': (!regForm.email.$pristine && !regForm.email.$valid) || (!regForm.email.$valid && regForm.$submitted) || emailInvalid}">
+			<!-- Email -->
+			<label for="email">Email: </label>
+			<input class="form-control" id="email" name="email" type="email" ng-model="user.email" ng-pattern="/^([\w\.]+)@([\w\.]+)\.(\w+)$/" ng-minlength="3" ng-maxlength="25" ng-blur="checkEmail(user)" required>
+			<p class="help-block" ng-show="emailMsg && !regForm.email.$error.required && regForm.email.$valid">{{ emailMsg }}</p>
+			<p class="help-block" ng-show="(!regForm.email.$pristine && regForm.email.$error.required) || (regForm.$submitted && regForm.email.$error.required)">Este campo es obligatorio</p>
+			<ul class="help-block" ng-show="(!regForm.email.$pristine && regForm.email.$error.pattern) || (!regForm.email.$pristine && regForm.email.$error.minglength) || (!regForm.email.$pristine && regForm.email.$error.maxlength)">
+				<li>Debe contener por lo menos un "@"</li>
+				<li>No puede contener caracteres especiales.</li>
+				<li>Debe ser mas de 3 letras, pero menos de 25.</li>
+			</ul>
+		</div>
+		<br>
+		<div ng-class="{ 'has-success': (!regForm.username.$pristine && regForm.username.$valid && !usernameInvalid), 'has-error': (!regForm.username.$pristine && !regForm.username.$valid) || (!regForm.username.$valid && regForm.$submitted) || usernameInvalid}">
+			<!-- Username -->
+			<label for="username">Usuario: </label>
+			<input class="form-control" id="username" name="username" type="text" ng-model="user.username" ng-minlength="3" ng-maxlength="25" ng-pattern="/^(?=.*?[a-zA-Z])(?!.*?[\W]).{3,16}$/" ng-blur="checkUsername(user)" required>
+			<p class="help-block" ng-show="usernameMsg && !regForm.username.$error.required && regForm.username.$valid">{{ usernameMsg }}</p>
+			<p class="help-block" ng-show="(!regForm.username.$pristine && regForm.username.$error.required) || (regForm.$submitted && regForm.username.$error.required)">Este campo es obligatorio</p>
+			<ul class="help-block" ng-show="(!regForm.username.$pristine && regForm.username.$error.pattern) || (!regForm.username.$pristine && regForm.username.$error.minglength) || (!regForm.username.$pristine && regForm.username.$error.maxlength)">
+				<li>No puede contener ningun caracter especial.</li>
+				<li>No puede contener espacios.</li>
+				<li>Debe ser mas de 3 letras, pero menos de 16.</li>
+			</ul>
+		</div>
+		<br>
+		<div ng-class="{ 'has-success': (!regForm.firstPassword.$pristine && regForm.firstPassword.$valid), 'has-error': (!regForm.firstPassword.$pristine && !regForm.firstPassword.$valid) || (!regForm.firstPassword.$valid && regForm.$submitted)}">
+			<!-- Password -->
+			<label for="password">Contraseña: </label>
+			<input class="form-control" id="password" name="firstPassword" type="password" ng-model="firstPassword" ng-minlength="8" ng-maxlength="16" ng-pattern="/^(?=.*?[a-z])(?=.*?[A-Z])(?=.*?[\d])(?!.*?[\s])(?=.*?[\W]).{8,25}$/" required>
+			<p class="help-block" ng-show="(!regForm.firstPassword.$pristine && regForm.firstPassword.$error.required) || (regForm.$submitted && regForm.firstPassword.$error.required)">Este campo es obligatorio</p>
+			<ul class="help-block" ng-show="(!regForm.firstPassword.$pristine && regForm.firstPassword.$error.pattern) || (!regForm.firstPassword.$pristine && regForm.firstPassword.$error.minglength) || (!regForm.firstPassword.$pristine && regForm.firstPassword.$error.maxlength)">
+				<li>Debe contener al menos una letra mayúscula, una minúscula, un caracter especial, un número y no puede contener espacios.</li>
+				<li>Debe contener al menos una letra minúscula.</li>
+				<li>Debe contener al menos un caracter especial.</li>
+				<li>Debe contener al menos un número.</li>
+				<li>No puede contener espacios.</li>
+				<li>Debe ser mas de 8 letras, pero menos de 25.</li>
+			</ul>
+		</div>
+		<br>
+		<div ng-class="{ 'has-success': confirmed && !regForm.confirmPassword.$error.required, 'has-error': (!confirmed && !regForm.confirmPassword.$error.required) || ( regForm.confirmPassword.$error.required && !regForm.confirmPassword.$pristine ) || ( regForm.$submitted && regForm.confirmPassword.$error.required)}">
+			<!-- Password -->
+			<label for="confirmPassword">Confirmar contraseña: </label>
+			<input class="form-control" id="confirmPassword" match="{{[firstPassword]}}" name="confirmPassword" type="password" ng-change="user.password = confirm" ng-model="confirm" required>
+			<p class="help-block" ng-show="(!regForm.confirmPassword.$pristine && regForm.confirmPassword.$error.required) || (regForm.$submitted && regForm.confirmPassword.$error.required)">Este campo es obligatorio</p>
+			<p class="help-block" ng-show="!confirmed && !regForm.confirmPassword.$pristine && regForm.firstPassword.$valid">La contraseña no coincide!</p>
+		</div>
+		<br>
+		<button type="submit" class="btn btn-primary">Registarse</button>
+	</form>
+	<div class="jumbottom text-center" ng-show="loading">
+		<br>
+		<p>Loading...</p>
 	</div>
-	<br>
-	<div ng-class="{ 'has-success': (!regForm.email.$pristine && regForm.email.$valid && !emailInvalid), 'has-error': (!regForm.email.$pristine && !regForm.email.$valid) || (!regForm.email.$valid && regForm.$submitted) || emailInvalid}">
-		<!-- Email -->
-		<label for="email">Email: </label>
-		<input class="form-control" id="email" name="email" type="email" ng-model="user.email" ng-pattern="/^([\w\.]+)@([\w\.]+)\.(\w+)$/" ng-minlength="3" ng-maxlength="25" ng-blur="checkEmail(user)" required>
-		<p class="help-block" ng-show="emailMsg && !regForm.email.$error.required && regForm.email.$valid">{{ emailMsg }}</p>
-		<p class="help-block" ng-show="(!regForm.email.$pristine && regForm.email.$error.required) || (regForm.$submitted && regForm.email.$error.required)">Este campo es obligatorio</p>
-		<ul class="help-block" ng-show="(!regForm.email.$pristine && regForm.email.$error.pattern) || (!regForm.email.$pristine && regForm.email.$error.minglength) || (!regForm.email.$pristine && regForm.email.$error.maxlength)">
-			<li>Debe contener por lo menos un "@"</li>
-			<li>No puede contener caracteres especiales.</li>
-			<li>Debe ser mas de 3 letras, pero menos de 25.</li>
-		</ul>
+	<div class="row show-hide-message" ng-show="successMsg">
+		<br>
+		<div class="alert alert-success">{{ successMsg }}</div>
 	</div>
-	<br>
-	<div ng-class="{ 'has-success': (!regForm.username.$pristine && regForm.username.$valid && !usernameInvalid), 'has-error': (!regForm.username.$pristine && !regForm.username.$valid) || (!regForm.username.$valid && regForm.$submitted) || usernameInvalid}">
-		<!-- Username -->
-		<label for="username">Usuario: </label>
-		<input class="form-control" id="username" name="username" type="text" ng-model="user.username" ng-minlength="3" ng-maxlength="25" ng-pattern="/^(?=.*?[a-zA-Z])(?!.*?[\W]).{3,16}$/" ng-blur="checkUsername(user)" required>
-		<p class="help-block" ng-show="usernameMsg && !regForm.username.$error.required && regForm.username.$valid">{{ usernameMsg }}</p>
-		<p class="help-block" ng-show="(!regForm.username.$pristine && regForm.username.$error.required) || (regForm.$submitted && regForm.username.$error.required)">Este campo es obligatorio</p>
-		<ul class="help-block" ng-show="(!regForm.username.$pristine && regForm.username.$error.pattern) || (!regForm.username.$pristine && regForm.username.$error.minglength) || (!regForm.username.$pristine && regForm.username.$error.maxlength)">
-			<li>No puede contener ningun caracter especial.</li>
-			<li>No puede contener espacios.</li>
-			<li>Debe ser mas de 3 letras, pero menos de 16.</li>
-		</ul>
+	<div class="row show-hide-message" ng-show="errorMsg">
+		<br>
+		<div class="alert alert-danger">{{ errorMsg }}</div>
 	</div>
-	<br>
-	<div ng-class="{ 'has-success': (!regForm.firstPassword.$pristine && regForm.firstPassword.$valid), 'has-error': (!regForm.firstPassword.$pristine && !regForm.firstPassword.$valid) || (!regForm.firstPassword.$valid && regForm.$submitted)}">
-		<!-- Password -->
-		<label for="password">Contraseña: </label>
-		<input class="form-control" id="password" name="firstPassword" type="password" ng-model="firstPassword" ng-minlength="8" ng-maxlength="16" ng-pattern="/^(?=.*?[a-z])(?=.*?[A-Z])(?=.*?[\d])(?!.*?[\s])(?=.*?[\W]).{8,25}$/" required>
-		<p class="help-block" ng-show="(!regForm.firstPassword.$pristine && regForm.firstPassword.$error.required) || (regForm.$submitted && regForm.firstPassword.$error.required)">Este campo es obligatorio</p>
-		<ul class="help-block" ng-show="(!regForm.firstPassword.$pristine && regForm.firstPassword.$error.pattern) || (!regForm.firstPassword.$pristine && regForm.firstPassword.$error.minglength) || (!regForm.firstPassword.$pristine && regForm.firstPassword.$error.maxlength)">
-			<li>Debe contener al menos una letra mayúscula, una minúscula, un caracter especial, un número y no puede contener espacios.</li>
-			<li>Debe contener al menos una letra minúscula.</li>
-			<li>Debe contener al menos un caracter especial.</li>
-			<li>Debe contener al menos un número.</li>
-			<li>No puede contener espacios.</li>
-			<li>Debe ser mas de 8 letras, pero menos de 25.</li>
-		</ul>
-	</div>
-	<br>
-	<div ng-class="{ 'has-success': confirmed && !regForm.confirmPassword.$error.required, 'has-error': (!confirmed && !regForm.confirmPassword.$error.required) || ( regForm.confirmPassword.$error.required && !regForm.confirmPassword.$pristine ) || ( regForm.$submitted && regForm.confirmPassword.$error.required)}">
-		<!-- Password -->
-		<label for="confirmPassword">Confirmar contraseña: </label>
-		<input class="form-control" id="confirmPassword" match="{{[firstPassword]}}" name="confirmPassword" type="password" ng-change="user.password = confirm" ng-model="confirm" required>
-		<p class="help-block" ng-show="(!regForm.confirmPassword.$pristine && regForm.confirmPassword.$error.required) || (regForm.$submitted && regForm.confirmPassword.$error.required)">Este campo es obligatorio</p>
-		<p class="help-block" ng-show="!confirmed && !regForm.confirmPassword.$pristine && regForm.firstPassword.$valid">La contraseña no coincide!</p>
-	</div>
-	<br>
-	<button type="submit" class="btn btn-primary">Registarse</button>
-</form>
-<div class="jumbottom text-center" ng-show="loading">
-	<br>
-	<p>Loading...</p>
-</div>
-<div class="row show-hide-message" ng-show="successMsg">
-	<br>
-	<div class="alert alert-success">{{ successMsg }}</div>
-</div>
-<div class="row show-hide-message" ng-show="errorMsg">
-	<br>
-	<div class="alert alert-danger">{{ errorMsg }}</div>
 </div>

@@ -27,6 +27,7 @@ router.post('/login', function(req, res, next){
 		if (!user) {
 			res.json({success: false, msg: 'Could not authenticate'})
 		} else if(user) {
+			console.log(user)
 			if (req.body.password) {
 				var validPassword = user.comparePassword(req.body.password)
 			} else {

@@ -1,18 +1,18 @@
 var express 	= require('express')
-var app 		= express()
-var path 		= require('path')
+var app 		  = express()
+var path      = require('path')
 var morgan 		= require('morgan')
 var mongoose 	= require('mongoose')
-var bodyParser 	= require('body-parser')
+var bodyParser= require('body-parser')
 var passport 	= require('passport')
-var port 		= process.env.PORT || 5000
+var port      = process.env.PORT || 5000
 
-var config 				= require('./config')
-var authenticateToken	= require('./middlewares/authenticateToken')
-var social				= require('./passport')(app, passport)
-var routeApi 			= require('./routes/api')
-var routeUser 			= require('./routes/user')
-var viewRoutes 			= require('./routes/viewRoutes')
+var config            = require('./config')
+var authenticateToken = require('./middlewares/authenticateToken')
+var social				    = require('./passport')(app, passport)
+var routeApi 			    = require('./routes/api')
+var routeUser         = require('./routes/user')
+var viewRoutes 			  = require('./routes/viewRoutes')
 
 
 app.engine('html', require('ejs').renderFile) // Setting ejs as render engine
@@ -36,7 +36,7 @@ mongoose.connect(config.database.mlab, function(err){
 		console.log('An error occurred while connecting with database!')
 		console.log(err)
 	}
-
+  
 	console.log('Success connection with database!!')
 })
 

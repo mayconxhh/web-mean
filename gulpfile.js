@@ -1,13 +1,13 @@
-var gulp = require('gulp')
-var nib = require('nib')
-var stylus = require('gulp-stylus')
-var browserify = require('browserify')
-var babel = require('babelify')
-var watch = require('gulp-watch')
-var source = require('vinyl-source-stream')
-var watchify = require('watchify')
-var uglify = require('gulp-uglify')
-var pump = require('pump')
+var gulp        = require('gulp')
+var nib         = require('nib')
+var stylus      = require('gulp-stylus')
+var browserify  = require('browserify')
+var babel       = require('babelify')
+var watch       = require('gulp-watch')
+var source      = require('vinyl-source-stream')
+var watchify    = require('watchify')
+var uglify      = require('gulp-uglify')
+var pump        = require('pump')
 
 gulp.task('stylus', () =>{
 	return gulp.src('./lib/styles/*.styl')
@@ -34,12 +34,12 @@ function compile(watch){
 		bundle
 			.transform(babel, {presets: ['es2015'], plugins: ['syntax-async-functions', 'transform-regenerator']})
 			.bundle()
-			.on('error', function(error){ 
+			.on('error', function(error){
 				console.log(error)
 				this.emit('end')
 			})
 			.pipe(source('app.js'))
-			.pipe(gulp.dest('public/js'))		
+			.pipe(gulp.dest('public/js'))
 	}
 
 	rebundle()

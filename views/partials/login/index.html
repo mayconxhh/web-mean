@@ -3,6 +3,7 @@
 		<h1>Login de Usuario</h1>
 	</div>
 
+	<!-- FORM LOGIN -->
 	<form ng-submit="doLogin(loginData)">
 		<div>
 			<label for="username">Usuario: </label>
@@ -14,20 +15,28 @@
 			<input class="form-control" id="password" type="password" ng-model="loginData.password">
 		</div>
 		<br>
+		<!-- LOGIN BUTTONS -->
 		<button type="submit" class="btn btn-primary">Iniciar Sesión</button>
+		<!-- SOCIAL BUTTONS -->
 		<a href="/auth/facebook" target="_self"><button type="button" class="btn btn-success">Facebook</button></a>
 		<a href="/auth/twitter" target="_self"><button type="button" class="btn btn-success">Twitter</button></a>
 		<a href="/auth/google" target="_self"><button type="button" class="btn btn-success">Google++</button></a>
+		<!-- RESET PASSWORD/FORGET USERNAME -->
+		<a href="/reset/password" target="_self" class=""><button type="button" class="btn btn-danger">Cambiar contraseña</button></a>
+		<a href="/reset/username" target="_self" class=""><button type="button" class="btn btn-primary">Cambiar nombre de usuario</button></a>
 	</form>
 	<br>
+	<!-- LOADING -->
 	<div class="jumbottom text-center" ng-show="loading">
 		<p>Loading...</p>
 	</div>
 	<br>
+	<!-- MESSAGE SUCCESS -->
 	<div class="row show-hide-message" ng-show="successMsg">
 		<div class="alert alert-success">{{ successMsg }}</div>
 	</div>
 	<br>
+	<!-- MESSAGE ERROR -->
 	<div class="row show-hide-message" ng-show="errorMsg">
 		<div class="alert alert-danger">{{ errorMsg }} <a ng-show="expired" href="/resend"><button type="button" class="btn btn-success">Resend activation link</button></a></a></div>
 	</div>

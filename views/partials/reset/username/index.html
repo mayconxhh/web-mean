@@ -1,0 +1,31 @@
+<div class="container">
+	<div class="page-header">
+		<h1>Olvide mi nombre de Usuario</h1>
+	</div>
+
+	<!-- FORM LOGIN -->
+	<form name="userForm" ng-submit="doRequestUsername(loginData, userForm.$valid )" novalidate>
+		<div>
+			<label for="email">E-mail: </label>
+			<input class="form-control" id="email" type="email" ng-model="loginData.email">
+		</div>
+		<br>
+		<!-- LOGIN BUTTONS -->
+		<button type="submit" class="btn btn-primary">Enviar</button>
+	</form>
+	<br>
+	<!-- LOADING -->
+	<div class="jumbottom text-center" ng-show="loading">
+		<p>Loading...</p>
+	</div>
+	<br>
+	<!-- MESSAGE SUCCESS -->
+	<div class="row show-hide-message" ng-show="successMsg">
+		<div class="alert alert-success">{{ successMsg }}</div>
+	</div>
+	<br>
+	<!-- MESSAGE ERROR -->
+	<div class="row show-hide-message" ng-show="errorMsg">
+		<div class="alert alert-danger">{{ errorMsg }}</div>
+	</div>
+</div>

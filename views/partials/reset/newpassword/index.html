@@ -1,0 +1,44 @@
+<div class="container">
+	<div class="page-header">
+		<h1>Cambiar contraseña</h1>
+	</div>
+
+	<form ng-hide="hideForm" name="resetPass" ng-submit="savePassword(user, resetPass.$valid, confirmed)" novalidate>
+		<div ng-class="{ 'has-success': (!resetPass.firstPassword.$pristine && resetPass.firstPassword.$valid), 'has-error': (!resetPass.firstPassword.$pristine && !resetPass.firstPassword.$valid) || (!resetPass.firstPassword.$valid && resetPass.$submitted)}">
+			<!-- Password -->
+			<label for="password">Nueva Contraseña: </label>
+			<input class="form-control" id="password" name="firstPassword" type="password" ng-model="firstPassword" ng-minlength="8" ng-maxlength="16" ng-pattern="/^(?=.*?[a-z])(?=.*?[A-Z])(?=.*?[\d])(?!.*?[\s])(?=.*?[\W]).{8,25}$/" required>
+			<p class="help-block" ng-show="(!resetPass.firstPassword.$pristine && resetPass.firstPassword.$error.required) || (resetPass.$submitted && resetPass.firstPassword.$error.required)">Este campo es obligatorio</p>
+			<ul class="help-block" ng-show="(!resetPass.firstPassword.$pristine && resetPass.firstPassword.$error.pattern) || (!resetPass.firstPassword.$pristine && resetPass.firstPassword.$error.minglength) || (!resetPass.firstPassword.$pristine && resetPass.firstPassword.$error.maxlength)">
+				<li>Debe contener al menos una letra mayúscula, una minúscula, un caracter especial, un número y no puede contener espacios.</li>
+				<li>Debe contener al menos una letra minúscula.</li>
+				<li>Debe contener al menos un caracter especial.</li>
+				<li>Debe contener al menos un número.</li>
+				<li>No puede contener espacios.</li>
+				<li>Debe ser mas de 8 letras, pero menos de 25.</li>
+			</ul>
+		</div>
+		<br>
+		<div ng-class="{ 'has-success': confirmed && !resetPass.confirmPassword.$error.required, 'has-error': (!confirmed && !resetPass.confirmPassword.$error.required) || ( resetPass.confirmPassword.$error.required && !resetPass.confirmPassword.$pristine ) || ( resetPass.$submitted && resetPass.confirmPassword.$error.required)}">
+			<!-- Password -->
+			<label for="confirmPassword">Confirmar nueva contraseña: </label>
+			<input class="form-control" id="confirmPassword" match="{{[firstPassword]}}" name="confirmPassword" type="password" ng-change="user.password = confirm" ng-model="confirm" required>
+			<p class="help-block" ng-show="(!resetPass.confirmPassword.$pristine && resetPass.confirmPassword.$error.required) || (resetPass.$submitted && resetPass.confirmPassword.$error.required)">Este campo es obligatorio</p>
+			<p class="help-block" ng-show="!confirmed && !resetPass.confirmPassword.$pristine && resetPass.firstPassword.$valid">La contraseña no coincide!</p>
+		</div>
+		<br>
+		<button type="submit" class="btn btn-primary">Registarse</button>
+	</form>
+	<div class="jumbottom text-center" ng-show="loading">
+		<br>
+		<p>Loading...</p>
+	</div>
+	<div class="row show-hide-message" ng-show="successMsg">
+		<br>
+		<div class="alert alert-success">{{ successMsg }}</div>
+	</div>
+	<div class="row show-hide-message" ng-show="errorMsg">
+		<br>
+		<div class="alert alert-danger">{{ errorMsg }}</div>
+	</div>
+</div>

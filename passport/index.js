@@ -4,7 +4,7 @@ var TwitterStrategy		= require('passport-twitter').Strategy
 var GoogleStrategy 		= require('passport-google-oauth').OAuth2Strategy;
 var session				= require('express-session')
 var moment				= require('moment')
-var config				= require('../config')	
+var config				= require('../config')
 var User 				= require('../models/user')
 var secret 				= config.secret.token
 
@@ -16,7 +16,7 @@ module.exports = function(app, passport){
 
 	passport.serializeUser(function(user, done) {
 		if (user.active) {
-			token = jwt.sign({username: user.username, email: user.email}, secret, { expiresIn: moment().add(14, "days").unix() })
+			token = jwt.sign({username: user.username, email: user.email}, secret, { expiresIn: '14d' })
 		} else {
 			token = 'inactive/error'
 		}
@@ -105,7 +105,7 @@ module.exports = function(app, passport){
 
 	app.get('/auth/google', passport.authenticate('google', { scope: ['https://www.googleapis.com/auth/plus.login', 'profile', 'email'] }));
 
-	app.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/socialerror' }), function(req, res) {	
+	app.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/socialerror' }), function(req, res) {
 		if(!req.user.active){
 			res.redirect('/inactive/error')
 		} else {

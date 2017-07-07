@@ -43,8 +43,8 @@ router.post('/login', function(req, res, next){
 			} else if(!user.active) {
 				res.json({success: false, msg:'Your account is not activate! Please check you e-mail form  activation link.', expired: true })
 			} else {
-				var dateExpire = moment().add(14, "days").unix()
-				var token = jwt.sign({username: user.username, email: user.email}, secret, { expiresIn: dateExpire })
+				// var dateExpire = moment().add(14, "days").unix()
+				var token = jwt.sign({username: user.username, email: user.email}, secret, { expiresIn: '14d' })
 				res.json({success: true, msg: 'User authenticate', token: token})
 			}
 		}
@@ -84,14 +84,14 @@ router.post('/new', function(req, res, next){
 		res.json({success:false, msg: 'Ensure email, password and email were provided'})
 	} else {
 
-		var dateExpire = moment().add(30, "seconds").unix()
+		// var dateExpire = moment().add(30, "seconds").unix()
 
 		var data = {
 			name			: req.body.name,
 			username		: req.body.username,
 			password 		: req.body.password,
 			email			: req.body.email,
-			temporarytoken	: jwt.sign({username: req.body.username, email: req.body.email}, secret, { expiresIn: dateExpire })
+			temporarytoken	: jwt.sign({username: req.body.username, email: req.body.email}, secret, { expiresIn: '30s' })
 		}
 
 		var user = new User(data)
@@ -228,8 +228,8 @@ router.post('/resend', function(req, res, next){
 router.put('/resend', function(req, res, next){
 	User.findOne({username: req.body.username}).select('username name email temporarytoken').exec(function(err, user){
 		if (err) throw err
-		var dateExpire = moment().add(30, "seconds").unix()
-		user.temporarytoken = jwt.sign({username: req.body.username, email: req.body.email}, secret, { expiresIn: dateExpire })
+		// var dateExpire = moment().add(30, "seconds").unix()
+		user.temporarytoken = jwt.sign({username: req.body.username, email: req.body.email}, secret, { expiresIn: '30s' })
 
 		user.save(function(err, user){
 			if (err) {
@@ -300,8 +300,8 @@ router.put('/resetpassword', function(req, res, next){
     } else if (!user.active) {
       res.json({ success: false, msg: 'Account  has not yet activated' })
     } else {
-      var dateExpire = moment().add(30, "seconds").unix()
-  		user.resetToken = jwt.sign({username: req.body.username, email: req.body.email}, secret, { expiresIn: dateExpire })
+      // var dateExpire = moment().add(30, "seconds").unix()
+  		user.resetToken = jwt.sign({username: req.body.username, email: req.body.email}, secret, { expiresIn: '30s' })
       user.save(function(err){
         if (err) {
           res.json({ success: false, msg: err })
@@ -339,7 +339,8 @@ router.get('/resetpassword/:token', function(req, res, next){
 
     jwt.verify(token, secret, function(err, decoded){
 			if (err) {
-				res.json({success:false, msg: err})
+        console.log(err)
+				res.json({success:false, msg: 'Password link has expired'})
 			} else{
 				if (!user) {
 				  res.json({ success: false, msg: 'Password link has expired' })

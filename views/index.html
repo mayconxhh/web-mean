@@ -36,7 +36,32 @@
 
 		<div class="Container theme-showcase" role="main">
 			<div ng-view></div>
+
+      <!-- <button ng-click="openModal()">Modal</button> -->
+
+      <!-- Modal -->
+      <div class="modal fade in viewModal" id="myModal" role="dialog">
+          <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" ng-click="endSession()" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">{{ modalHeader }}</h4>
+              </div>
+              <div class="modal-body">
+                <p>{{ modalBody }}</p>
+                <div ng-show="hideButtons" class="loader"></div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" ng-hide="hideButtons" ng-click="renewSession()" class="btn btn-primary" data-dismiss="modal">Si</button>
+                <button type="button" ng-hide="hideButtons" ng-click="endSession()" class="btn btn-danger" data-dismiss="modal">No</button>
+              </div>
+            </div>
+          </div>
+        </div>
 		</div>
-		
+    <!-- <div class="modal-backdrop fade viewModal"></div> -->
+
 	</body>
 </html>

@@ -390,4 +390,17 @@ router.put('/savenewpassword', function(req, res, next){
   })
 })
 
+//Renew token
+router.get('/renewToken/:username', function(req, res, next){
+  User.findOne({ username: req.params.username }).select().exec(function(err, user){
+    if (err) throw err
+    if (!user) {
+      res.json({ success: false, msg: 'No user was found' })
+    } else {
+      var newToken = jwt.sign({username: user.username, email: user.email}, secret, { expiresIn: '14d' })
+      res.json({ success: true, msg: 'User authenticate', token: newToken })
+    }
+  })
+})
+
 module.exports = router

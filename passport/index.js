@@ -16,7 +16,7 @@ module.exports = function(app, passport){
 
 	passport.serializeUser(function(user, done) {
 		if (user.active) {
-			token = jwt.sign({username: user.username, email: user.email}, secret, { expiresIn: '14d' })
+			token = jwt.sign({username: user.username, email: user.email, permission: user.permission}, secret, { expiresIn: '14d' })
 		} else {
 			token = 'inactive/error'
 		}
@@ -36,7 +36,7 @@ module.exports = function(app, passport){
 		profileFields: ['id', 'displayName', 'photos', 'email']
 		},
 		function(accessToken, refreshToken, profile, done) {
-			User.findOne({ email: profile._json.email}).select('username password email active').exec(function(err, user){
+			User.findOne({ email: profile._json.email}).select('username email active permission').exec(function(err, user){
 				if (err) done(err)
 
 				if (user && user !== null) {
@@ -54,7 +54,7 @@ module.exports = function(app, passport){
 		callbackURL		: '/auth/twitter/callback',
 		userProfileURL: "https://api.twitter.com/1.1/account/verify_credentials.json?include_email=true"
 	}, function(token, tokenSecret, profile, done){
-		User.findOne({ email: profile._json.email}).select('username password email active').exec(function(err, user){
+		User.findOne({ email: profile._json.email}).select('username email active permission').exec(function(err, user){
 			if (err) done(err)
 
 			if (user && user !== null) {
@@ -71,7 +71,7 @@ module.exports = function(app, passport){
 			callbackURL: '/auth/google/callback'
 		},
 		function(accessToken, refreshToken, profile, done) {
-			User.findOne({ email: profile._json.emails[0].value}).select('username password email active').exec(function(err, user){
+			User.findOne({ email: profile._json.emails[0].value}).select('username email active permission').exec(function(err, user){
 				if (err) done(err)
 
 				if (user && user !== null) {

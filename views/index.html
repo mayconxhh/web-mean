@@ -26,6 +26,7 @@
 						<li ng-class="{ active : esActivo('/') }"><a href="/">Home</a></li>
 						<li ng-class="{ active : esActivo('/login') }"><a href="/login" ng-if="!isLoggedIn">Login</a></li>
 						<li ng-class="{ active : esActivo('/about') }"><a href="/about" ng-if="isLoggedIn">About</a></li>
+						<li ng-class="{ active : esActivo('/management') }"><a href="/management" ng-if="isLoggedIn && isPermited">Management</a></li>
 						<li ng-class="{ active : esActivo('/register') }"><a href="/register" ng-if="!isLoggedIn">Registrarse</a></li>
 						<li ng-class="{ active : esActivo('/profile') }"><a href="/profile" ng-if="isLoggedIn">Hola {{user.username}}</a></li>
 						<li ng-class="{ active : esActivo('/logout') }"><a ng-click="logout()"  ng-if="isLoggedIn">Logout</a></li>

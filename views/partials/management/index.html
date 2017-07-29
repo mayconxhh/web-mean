@@ -1,13 +1,17 @@
 <div class="container">
+
+	<!-- HEADER -->
 	<div class="page-header">
 		<h1>Administración de usuario</h1>
 	</div>
+
 	<!-- LOADING -->
 	<div class="jumbottom text-center" ng-show="loading">
 		<p>Loading...</p>
 	</div>
 	<br>
 	
+	<!-- FILTER SHOW RESULTS -->
 	<button type="button" ng-click="showMore(number)" class="btn btn-success">Aplicar filtro</button>
 	<button type="button" ng-click="showAll()" class="btn btn-warning">Mostrar todo</button>
 	<div class="showMore" style="display: inline;">
@@ -19,6 +23,25 @@
 		</div>
 	</div>
 
+	<!-- SEARCH FILTER -->
+	<div class="navbar-form">
+		<div class="form-group">
+			<input type="text" class="form-control" name="search" placeholder="Buscar..." ng-model="searchKeyword">
+		</div>
+		<button type="button" ng-click="search(searchKeyword, number)" class="btn btn-default">Buscar</button>
+		<button type="button" ng-click="clean()" class="btn btn-default">Vaciar campo</button>
+		<a href="/management/search" class="btn btn-default">Busqueda Avanzada</a>
+	</div>
+
+	<div ng-show="searchFilter !== undefined">
+		<p><strong>Total de resultados: </strong>{{ (users | filter: searchFilter).length }}</p>
+	</div>
+
+	<div ng-show="searchFilter !== undefined">
+		<p><strong>Resultados en pantalla: </strong>{{ (users | filter: searchFilter | limitTo: limit).length }}</p>
+	</div>
+
+
 	<br>
 	<br>
 	<!-- MESSAGE ERROR -->
@@ -26,7 +49,7 @@
 		<div class="alert alert-danger">{{ showMoreError }}</div>
 	</div>
 
-	<!-- View all users -->
+	<!-- SHOW USERS -->
 	<div class="panel panel-primary">
 		<div class="panel-heading">
 			<strong>Administración de usuario</strong>
@@ -37,7 +60,7 @@
 				<th>Nombre de usuario</th>
 				<th>Email</th>
 			</tr>
-			<tr ng-repeat="person in users | limitTo: limit">
+			<tr ng-repeat="person in users | filter: searchFilter | limitTo: limit">
 				<td>{{ person.name }}</td>
 				<td>{{ person.username }}</td>
 				<td>{{ person.email }}</td>
@@ -51,6 +74,12 @@
 
 	<br>
 
+	<!-- MESSAGE ERROR -->
+	<div class="row show-hide-message" ng-show="showMoreError">
+		<div class="alert alert-danger">{{ showMoreError }}</div>
+	</div>
+	
+	<!-- FILTER SHOW USERS -->
 	<button type="button" ng-click="showMore(number)" class="btn btn-success">Aplicar filtro</button>
 	<button type="button" ng-click="showAll()" class="btn btn-warning">Mostrar todo</button>
 	<div class="showMore" style="display: inline;">
@@ -61,4 +90,7 @@
 			</div>
 		</div>
 	</div>
+
+	<br>
+	<br>
 </div>

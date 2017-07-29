@@ -1,0 +1,89 @@
+<div class="container">
+
+	<!-- HEADER -->
+	<div class="page-header">
+		<h1>Busqueda Avanzada</h1>
+	</div>
+
+	<!-- LOADING -->
+	<div class="jumbottom text-center" ng-show="loading">
+		<p>Loading...</p>
+	</div>
+	<br>
+
+	<!-- SEARCH USERNAME -->
+	<div class="navbar-form">
+		<div class="form-group">
+			<input type="text" class="form-control" name="searchByUsername" placeholder="Buscar por..." ng-model="searchByUsername">
+		</div>
+		<button type="button" class="btn btn-default">Usuario</button>
+	</div>
+	
+	<!-- SEARCH E-MAIL -->
+	<div class="navbar-form">
+		<div class="form-group">
+			<input type="text" class="form-control" name="searchByEmail" placeholder="Buscar por..." ng-model="searchByEmail">
+		</div>
+		<button type="button" class="btn btn-default">Correo</button>
+	</div>
+
+	<!-- SEARCH NAME -->
+	<div class="navbar-form">
+		<div class="form-group">
+			<input type="text" class="form-control" name="searchByName" placeholder="Buscar por..." ng-model="searchByName">
+		</div>
+		<button type="button" class="btn btn-default">Nombres</button>
+	</div>
+
+	<div class="navbar-form">
+		<button type="button" ng-click="advancedSearch(searchByUsername, searchByEmail, searchByName)" class="btn btn-default">Buscar</button>
+		<br>
+		<br>
+		<div class="btn-group">
+			<button type="button" class="btn btn-danger">Ordenar por</button>
+			<button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				<span class="caret"></span>
+				<span class="sr-only">Toggle Dropdown</span>
+			</button>
+			<ul class="dropdown-menu">
+				<li><a ng-click="sortOrder('username')">Usuario</a></li>
+				<li><a ng-click="sortOrder('email')">Correo</a></li>
+				<li><a ng-click="sortOrder('name')">Nombres</a></li>
+			</ul>
+		</div>
+	</div>
+
+	<div ng-show="searchLimit === undefined">
+		<p><strong>Resultados: </strong>{{ ( users | filter: advancedSearchFilter | limitTo: searchLimit ).length }}</p>
+	</div>
+
+	<div ng-show="sort">
+		<p><strong>Ordenado por: </strong>{{ sort }}</p>
+	</div>
+	<br>
+
+	<!-- SHOW USERS -->
+	<div class="panel panel-primary">
+		<div class="panel-heading">
+			<strong>Administración de usuario</strong>
+		</div>
+		<table class="table">
+			<tr>
+				<th>Nombre</th>
+				<th>Nombre de usuario</th>
+				<th>Email</th>
+			</tr>
+			<tr ng-repeat="person in users | filter: advancedSearchFilter | limitTo: searchLimit | orderBy: sort">
+				<td>{{ person.name }}</td>
+				<td>{{ person.username }}</td>
+				<td>{{ person.email }}</td>
+				<td>
+					<a href="/management/edit/{{person._id}}" ng-show="editAccess" class="btn btn-primary">Editar</a>
+					<a ng-show="deleteAccess" class="btn btn-danger" ng-click="deleteUser(person.username)">Eliminar</a>
+				</td>
+			</tr>
+		</table>
+	</div>
+
+	<br>
+</div>

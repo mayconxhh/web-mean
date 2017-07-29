@@ -1,0 +1,98 @@
+<div class="container">
+	<div class="page-header">
+		<h1>Editar usuario</h1>
+	</div>
+
+	<ul class="nav nav-tabs">
+		<li role="presentation" ng-click="namePhase()" ng-class="nameTab">
+			<a href="">Nombre</a>
+		</li>
+		<li role="presentation" ng-click="usernamePhase()" ng-class="usernameTab">
+			<a href="">Nombre de usuario</a>
+		</li>
+		<li role="presentation" ng-click="emailPhase()" ng-class="emailTab">
+			<a href="">Correo</a>
+		</li>
+		<li role="presentation" ng-click="permissionsPhase()" ng-class="permissionsTab">
+			<a href="">Permiso</a>
+		</li>
+	</ul>
+	<br>
+	
+	<!-- EDIT NAME USER -->
+	<form name="nameForm" ng-show="phase1" ng-submit="updateName(updateUser, nameForm.name.$valid)" novalidate>
+		<div ng-class="{ 'has-success': (!nameForm.name.$pristine && nameForm.name.$valid), 'has-error': (!nameForm.name.$pristine && !nameForm.name.$valid) || (!nameForm.name.$valid && nameForm.$submitted)}">
+			<!-- Name -->
+			<label for="name">Nombre: </label>
+			<input class="form-control" id="name" name="name" type="text" ng-model="updateUser.newName" ng-pattern="/^(([a-zA-Z]{2,10})\w)?(([\s]*[a-zA-Z]{2,10})\w)$/" ng-minglength="3" ng-maxlength="22" required>
+			<p class="help-block" ng-show="(!nameForm.name.$pristine && nameForm.name.$error.required) || (nameForm.$submitted && nameForm.name.$error.required)">Este campo es obligatorio</p>
+			<ul class="help-block" ng-show="(!nameForm.name.$pristine && nameForm.name.$error.pattern) || (!nameForm.name.$pristine && nameForm.name.$error.minglength) || (!nameForm.name.$pristine && regForm.name.$error.maxlength)">
+				<li>El segundo nombre es opcional.</li>
+				<li>Solo puedes ingresar un espacio entre nombres.</li>
+				<li>Debe ser mas de 3 letras, pero menos de 22. Cada nombre puede contener al menos 10 letras</li>
+				<li>No puede contener caracteres especiales.</li>
+				<li>No puede contener números</li>
+			</ul>
+		</div>
+
+		<br>
+		<button type="submit" class="btn btn-primary">Actualizar</button>
+	</form>
+
+	<!-- EDIT USERNAME -->
+	<form name="usernameForm" ng-show="phase2" ng-submit="updateUsername(updateUser, usernameForm.username.$valid)" novalidate>
+		<div ng-class="{ 'has-success': (!usernameForm.username.$pristine && usernameForm.username.$valid && !usernameInvalid), 'has-error': (!usernameForm.username.$pristine && !usernameForm.username.$valid) || (!usernameForm.username.$valid && usernameForm.$submitted) || usernameInvalid}">
+			<!-- Username -->
+			<label for="username">Usuario: </label>
+			<input class="form-control" id="username" name="username" type="text" ng-model="updateUser.newUsername" ng-minlength="3" ng-maxlength="25" ng-pattern="/^(?=.*?[a-zA-Z])(?!.*?[\W]).{3,16}$/" required>
+			<p class="help-block" ng-show="usernameMsg && !usernameForm.username.$error.required && usernameForm.username.$valid">{{ usernameMsg }}</p>
+			<p class="help-block" ng-show="(!usernameForm.username.$pristine && usernameForm.username.$error.required) || (usernameForm.$submitted && usernameForm.username.$error.required)">Este campo es obligatorio</p>
+			<ul class="help-block" ng-show="(!usernameForm.username.$pristine && usernameForm.username.$error.pattern) || (!usernameForm.username.$pristine && usernameForm.username.$error.minglength) || (!usernameForm.username.$pristine && usernameForm.username.$error.maxlength)">
+				<li>No puede contener ningun caracter especial.</li>
+				<li>No puede contener espacios.</li>
+				<li>Debe ser mas de 3 letras, pero menos de 16.</li>
+			</ul>
+		</div>
+
+		<br>
+		<button type="submit" class="btn btn-primary">Actualizar</button>
+	</form>
+
+	<!-- EDIT EMAIL -->
+	<form name="emailForm" ng-show="phase3" ng-submit="updateEmail(updateUser, emailForm.email.$valid)" novalidate>
+		<div ng-class="{ 'has-success': (!emailForm.email.$pristine && emailForm.email.$valid && !emailInvalid), 'has-error': (!emailForm.email.$pristine && !emailForm.email.$valid) || (!emailForm.email.$valid && emailForm.$submitted) || emailInvalid}">
+			<!-- Email -->
+			<label for="email">Email: </label>
+			<input class="form-control" id="email" name="email" type="email" ng-model="updateUser.newEmail" ng-pattern="/^([\w\.]+)@([\w\.]+)\.(\w+)$/" ng-minlength="3" ng-maxlength="25" required>
+			<p class="help-block" ng-show="emailMsg && !emailForm.email.$error.required && emailForm.email.$valid">{{ emailMsg }}</p>
+			<p class="help-block" ng-show="(!emailForm.email.$pristine && emailForm.email.$error.required) || (emailForm.$submitted && emailForm.email.$error.required)">Este campo es obligatorio</p>
+			<ul class="help-block" ng-show="(!emailForm.email.$pristine && emailForm.email.$error.pattern) || (!emailForm.email.$pristine && emailForm.email.$error.minglength) || (!emailForm.email.$pristine && emailForm.email.$error.maxlength)">
+				<li>Debe contener por lo menos un "@"</li>
+				<li>No puede contener caracteres especiales.</li>
+				<li>Debe ser mas de 3 letras, pero menos de 25.</li>
+			</ul>
+		</div>
+
+		<br>
+		<button type="submit" class="btn btn-primary">Actualizar</button>
+	</form>
+
+	<!-- EDIT PERMISSION -->
+	<div ng-show="phase4">
+		<label>Permiso actual:</label> {{ updateUser.newPermission }}
+		<br>
+		<br>
+		<button ng-disabled="disabledUser" ng-click="updatePermission({ newPermission: 'user' })" type="button" class="btn btn-success">Usuario</button>
+		<button ng-disabled="disabledModerator" ng-click="updatePermission({ newPermission: 'moderator' })" type="button" class="btn btn-info">Moderador</button>
+		<button ng-disabled="disabledAdmin" ng-click="updatePermission({ newPermission: 'admin' })" type="button" class="btn btn-warning">Administrador</button>
+	</div>
+
+	<div class="row show-hide-message" ng-show="errorMsg">
+		<br>
+		<div class="alert alert-danger">{{ errorMsg }}</div>
+	</div>
+	<div class="row show-hide-message" ng-show="successMsg">
+		<br>
+		<div class="alert alert-success">{{ successMsg }}</div>
+	</div>
+</div>
